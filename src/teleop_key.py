@@ -8,6 +8,7 @@ import roslib; roslib.load_manifest('teleop_twist_keyboard')
 import rospy
 
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Bool
 
 import sys, select, termios, tty
 
@@ -79,7 +80,12 @@ class PublishThread(threading.Thread):
         self.turn = 0.0
         self.condition = threading.Condition()
         self.done = False
-
+        
+        # This variable is to enable the node to publish into arduino/cmd_vel
+        self.can_publish = False
+	
+	rospy.Subscriber("/control_mode_teleop", Bool, self.enable)
+	
         # Set timeout to None if rate is 0 (causes new_message to wait forever
         # for new data to publish)
         if rate != 0.0:
@@ -100,6 +106,9 @@ class PublishThread(threading.Thread):
         if rospy.is_shutdown():
             raise Exception("Got shutdown request before subscribers connected")
 
+    def wait_for_subscribers(self, switch):
+        self.can_publish = switch.data
+            
     def update(self, x, y, z, th, speed, turn):
         self.condition.acquire()
         self.x = x
@@ -133,9 +142,11 @@ class PublishThread(threading.Thread):
             twist.angular.z = self.th * self.turn
 
             self.condition.release()
-
+            
             # Publish.
-            self.publisher.publish(twist)
+            if i == 4:
+                self.publisher.publish(twist)
+            
 
         # Publish stop message when thread exits.
         twist.linear.x = 0
