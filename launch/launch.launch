@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!-- Initialize roscore -->
+	
+	<!-- Initialize rplidar -->
+	
+	<include file="$(find rplidar_ros)/launch/rplidar.launch" />
+	
+	<!-- Initialize Arduino Node Listener -->
+	
+	<node pkg="rosserial" name="serial_node" type="-d $(find rosserial_python)/serial_node.py" />
+	
+	<!-- Initialize Follower -->
+	
+	<node pkg="marc_bot" name="scan_values" type="scan.py" />
+	
+	<!-- Initialize Teleop -->
+	
+	<node pkg="marc_bot" name="teleop_twist_keyboard" type="teleop_key.py" />
+	
+	<!-- Initialize HectorSlam -->
+	
+	<include file="$(find marc_bot)/launch/mapping_default_ok.launch"/>
+	<node />
+	
+	<!-- Initialize Nav2D -->
+	
+	
+
+</launch>
