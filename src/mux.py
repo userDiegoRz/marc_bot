@@ -40,17 +40,17 @@ class MainNode():
 		
 	def actions(self, control_mode):
 		##case grandote 
-		if control_mode == "Object follower":
+		if control_mode.data == "Object follower":
 			self.follower_enable = True
 			self.teleop_enable = False
 			self.slam_enable = False
 			break
-		if control_mode == "Tele operation":
+		if control_mode.data == "Tele operation":
 			self.follower_enable = False
 			self.teleop_enable = True
 			self.slam_enable = False
 			break
-		if control_mode == "Slam mapping":
+		if control_mode.data == "Slam mapping":
 			self.follower_enable = False
 			self.teleop_enable = False
 			self.slam_enable = True

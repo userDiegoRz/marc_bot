@@ -22,7 +22,7 @@ class ObjectFollower():
 		self.measure_values = ''
 		
 		# This variable is to enable the node to publish into arduino/cmd_vel
-		self.can_publish = False
+		self.can_publish = True
 		
 		self.rad_rpm = 0.10472
 		self.max_rpm = 150 # revoluciones por minuto de los motores
@@ -44,7 +44,7 @@ class ObjectFollower():
 			self.rate.sleep() 
 
 	def enable(self, switch):
-		self.can_publish = switch.data 
+		self.can_publish = switch.data or True
 	
 	def ranges_cb(self, msg):
 		self.ranges = msg.ranges #arreglo de distancias leidas por el lidar del robot
