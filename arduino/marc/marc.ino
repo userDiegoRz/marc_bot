@@ -249,17 +249,17 @@ void loop() {
 
     // Turn clockwise, MARC will turn at a stablish speed of 64.
     if (dir_x_map < 64 && speed_y_map == 64){
-      roboclaw.ForwardM2(address,64); 
-      roboclaw.BackwardM1(address,64);  
-      roboclaw2.ForwardM2(address,64); 
-      roboclaw2.BackwardM1(address,64);   
+      roboclaw.ForwardM2(address,100); 
+      roboclaw.BackwardM1(address,100);  
+      roboclaw2.ForwardM2(address,100); 
+      roboclaw2.BackwardM1(address,100);   
     }
     // Turn anti-clockwise, MARC will turn at a stablish speed of 64.
     else if (dir_x_map > 64 && speed_y_map == 64){
-      roboclaw.ForwardM1(address,64);
-      roboclaw.BackwardM2(address,64); 
-      roboclaw2.ForwardM1(address,64);
-      roboclaw2.BackwardM2(address,64); 
+      roboclaw.ForwardM1(address,100);
+      roboclaw.BackwardM2(address,100); 
+      roboclaw2.ForwardM1(address,100);
+      roboclaw2.BackwardM2(address,100); 
     }
     // Turn left 
     else if (dir_x_map > 64){
