@@ -3,7 +3,6 @@ import rospy
 import numpy
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
-from std_msgs.msg import Bool
 
 ######
 # Multiplexor Node to control All MARC's Auto modes
@@ -15,53 +14,55 @@ class MainNode():
 		rospy.on_shutdown(self.cleanup)
 		#PUBLISHER
 		print("Setting publisher")
-		self.follower = rospy.Publisher("/control_mode_follower", Bool, queue_size=10)
-		self.teleop = rospy.Publisher("/control_mode_teleop", Bool, queue_size=10)
-		self.slam = rospy.Publisher("/control_mode_slam", Bool, queue_size=10)
+		self.follower = rospy.Publisher("/control_mode_follower", String, queue_size=10)
+		self.teleop = rospy.Publisher("/control_mode_teleop", String, queue_size=10)
+		self.nav2d = rospy.Publisher("/control_mode_nav2d", String, queue_size=10)
 		print("Publisher OK")
 		
 		print("Starting Variables")
-		self.follower_enable = False
-		self.teleop_enable = False
-		self.slam_enable = False
+		self.follower_enable = 'false'
+		self.teleop_enable = 'false'
+		self.nav2d_enable = 'false'
 		
 		#SUBSCRIBER
 		print("Subscribing to Interface")
-		rospy.Subscriber("/control", LaserScan, self.actions) 
+		rospy.Subscriber("/interface", String, self.actions) 
 		self.rate = rospy.Rate(1)
 		
 		while not rospy.is_shutdown(): 
-			
 			self.follower.publish(self.follower_enable)
 			self.teleop.publish(self.teleop_enable)
-			self.slam.publish(self.slam_enable)
-			
+			self.nav2d.publish(self.nav2d_enable)
 			self.rate.sleep() 
 		
 	def actions(self, control_mode):
-		##case grandote 
-		if control_mode == "Object follower":
-			self.follower_enable = True
-			self.teleop_enable = False
-			self.slam_enable = False
-			break
-		if control_mode == "Tele operation":
-			self.follower_enable = False
-			self.teleop_enable = True
-			self.slam_enable = False
-			break
-		if control_mode == "Slam mapping":
-			self.follower_enable = False
-			self.teleop_enable = False
-			self.slam_enable = True
-			break
+		##case grandote
+		print(type(control_mode.data)) 
+		if control_mode.data == "follower":
+			self.follower_enable = 'true'
+			self.teleop_enable = 'false'
+			self.nav2d_enable = 'false'
 			
-	
+		elif control_mode.data == "teleop":
+			self.follower_enable = 'false'
+			self.teleop_enable = 'true'
+			self.nav2d_enable = 'false'
+			
+		elif control_mode.data == "nav2d":
+			self.follower_enable = 'false'
+			self.teleop_enable = 'false'
+			self.nav2d_enable = 'true'
+			
+		else:
+			self.follower_enable = 'false'
+			self.teleop_enable = 'false'
+			self.nav2d_enable = 'false'
+			
 		
 	def cleanup(self):
-		self.follower_enable = False
-		self.teleop_enable = False
-		self.slam_enable = False
+		self.follower_enable = 'false'
+		self.teleop_enable = 'false'
+		self.nav2d_enable = 'false'
 		print("NODE WAS TURNED OFF")
 
          
