@@ -4,7 +4,6 @@ import numpy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
 from std_msgs.msg import String
-from std_msgs.msg import Bool
 
 
 class ObjectFollower():  
@@ -22,7 +21,7 @@ class ObjectFollower():
 		self.measure_values = ''
 		
 		# This variable is to enable the node to publish into arduino/cmd_vel
-		self.can_publish = False
+		self.can_publish = True
 		
 		self.rad_rpm = 0.10472
 		self.max_rpm = 150 # revoluciones por minuto de los motores
@@ -33,18 +32,17 @@ class ObjectFollower():
 		#SUBSCRIBER
 		print("Subscribing to subscriber")
 		rospy.Subscriber("/scan", LaserScan, self.ranges_cb) 
-		rospy.Subscriber("/control_mode_follower", Bool, self.enable) 
+		rospy.Subscriber("/control_mode_follower", String, self.enable) 
 		self.rate = rospy.Rate(1)
 		
 		while not rospy.is_shutdown(): 
-			print("Reading...")
 			self.measures.publish(self.measure_values)
-			if (self.can_publish):
+			if (self.can_publish == 'true'):
 				self.pub.publish(self.vel_msg) 
 			self.rate.sleep() 
 
 	def enable(self, switch):
-		self.can_publish = switch.data 
+		self.can_publish = switch.data
 	
 	def ranges_cb(self, msg):
 		self.ranges = msg.ranges #arreglo de distancias leidas por el lidar del robot

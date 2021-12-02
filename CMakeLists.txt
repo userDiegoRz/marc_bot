@@ -207,6 +207,9 @@ include_directories(
 catkin_install_python(PROGRAMS src/scan.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+catkin_install_python(PROGRAMS src/marc.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 catkin_install_python(PROGRAMS src/teleop_key.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

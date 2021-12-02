@@ -5,10 +5,10 @@
 	<arg name="geotiff_map_file_path" default="$(find hector_geotiff)/maps"/>
 	<param name="/use_sim_time" value="false"/>
 	
-	<node pkg="rviz" type="rviz" name="rviz"
-	args="-d $(find myhector_slam_config)/rviz_cfg/mapping_demo.rviz"/>
+	<!--node pkg="rviz" type="rviz" name="rviz"
+	args="-d $(find myhector_slam_config)/rviz_cfg/mapping_demo.rviz"/-->
 	
-	<node pkg="tf2_ros" type="static_transform_publisher" name="lidar_to_baselink" args="0  0  0.88  0  0  0 base_link laser"/> 
+	<node pkg="tf2_ros" type="static_transform_publisher" name="lidar_to_baselink" args="0.2  0  0.88  0  0  0 base_link laser"/> 
 	
 	<include file="$(find marc_bot)/launch/mapping_default.launch"/>
 	

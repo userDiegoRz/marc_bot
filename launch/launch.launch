@@ -7,25 +7,37 @@
 	
 	<include file="$(find rplidar_ros)/launch/rplidar.launch" />
 	
-	<!-- Initialize Arduino Node Listener -->
+	<!-- Initialize Arduino Node Listener
 	
-	<node pkg="rosserial" name="serial_node" type="-d $(find rosserial_python)/serial_node.py" />
+	<node pkg="rosserial" name="serial_node" type="-d $(find rosserial_python)/serial_node.py" args=""/>-->
+	
+	<!-- Initialize the mux for the control modes -->
+	
+	<node pkg="marc_bot" name="marc_main_node" type="mux.py" />
 	
 	<!-- Initialize Follower -->
 	
 	<node pkg="marc_bot" name="scan_values" type="scan.py" />
+
 	
 	<!-- Initialize Teleop -->
 	
-	<node pkg="marc_bot" name="teleop_twist_keyboard" type="teleop_key.py" />
+	<!--<node pkg="marc_bot" name="teleop_twist_keyboard" type="teleop_key.py" />-->
+		
+	<!-- Initialize Nav2d mode 
 	
-	<!-- Initialize HectorSlam -->
+	<node pkg="marc_bot" name="vel_remap" type="vel_remap.py" />-->
 	
-	<include file="$(find marc_bot)/launch/mapping_default_ok.launch"/>
-	<node />
+	<!-- Initialize HectorSlam 
 	
-	<!-- Initialize Nav2D -->
+	<include file="$(find marc_bot)/launch/mapping_default.launch"/>-->
 	
+	<!-- Initialize Nav2d -->
 	
+	<include file="$(find marc_bot)/launch/tutorial1.launch"/>
+	
+	<!-- Initialize interfaz -->
+	
+	<node pkg="marc_bot" name="UI" type="marc.py"/>
 
 </launch>
